@@ -4,7 +4,7 @@ import LoadingPage from "./LoadingPage.js"
 
 import Actions from './Actions.js'
 
-const row = (bill) => {
+const row = (bill) => { // retourne du HTML
   return (`
     <tr>
       <td>${bill.type}</td>
@@ -19,7 +19,22 @@ const row = (bill) => {
     `)
   }
 
-const rows = (data) => {
+// Fonction pour classer par ordre décroissant
+function sortByDesc(property){
+  return function(a, b){
+      if(a[property] < b[property]){
+          return -1;
+      }else if(a[property] > b[property]){
+          return 1;
+      }else{
+          return 0;   
+      }
+  }
+}
+
+const rows = (data) => { // retourne du HTML
+  // les données sont déjà classées par date, il faut juste inverser l'ordre
+  data.sort().reverse(); // On inverse l'ordre des données
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
