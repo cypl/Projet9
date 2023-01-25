@@ -45,7 +45,7 @@ const rows = (data) => { // retourne du HTML
     }
     return 0;
   });
-  return (data2 && data.length) ? data.map(bill => row(bill)).join("") : ""
+  return (data2 && data2.length) ? data2.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
