@@ -33,9 +33,19 @@ function sortByDesc(property){
 }
 
 const rows = (data) => { // retourne du HTML
-  // les données sont déjà classées par date, il faut juste inverser l'ordre
-  data.sort().reverse(); // On inverse l'ordre des données
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  // on crée une copie de l'array data[] dans lequel on retire les éléments qui ont une propriété name qui est null
+  const data2 = data.filter(d => d.name != null);
+  // on les classe par ordre décroissant, grâce à la propriété dateForSort, qui a été ajoutée dans la méthode getBills (Bills.js)
+  data2.sort((a, b) => {
+    if (a.dateForSort < b.dateForSort) {
+      return 1;
+    }
+    if (a.dateForSort > b.dateForSort) {
+      return -1;
+    }
+    return 0;
+  });
+  return (data2 && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
