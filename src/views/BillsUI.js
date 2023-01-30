@@ -21,7 +21,7 @@ const row = (bill) => {
 
 const rows = (data) => {
   // Les données de data[] sont classées par défaut dans l'ordre selon lequel elles sont ajoutées par l'utilisateur.
-  // On peut les ré-ordonner par date, mais le formattage de la date ne le permet pas.
+  // On peut les ré-ordonner par date, mais le formatage de la date ne le permet pas.
   // On peut ajouter une propriété date "dateForSort" dans la méthode getBills, qui aura un format permettant de ré-ordonner les données (dans ./containers/Bills.js).
   // On crée une copie de l'array data[] dans lequel on retire les éléments qui ont une propriété name qui est null.
   const data2 = data.filter(d => d.name != null);
