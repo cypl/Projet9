@@ -1,6 +1,12 @@
 #eye {
   cursor: pointer;
 }
+#eye.eye_error{
+  opacity:0.5;
+}
+#eye.eye_error svg path{
+  fill:rgb(253, 69, 69);
+}
 
 #download {
   cursor: pointer;
