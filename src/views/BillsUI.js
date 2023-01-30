@@ -4,7 +4,7 @@ import LoadingPage from "./LoadingPage.js"
 
 import Actions from './Actions.js'
 
-const row = (bill) => { // retourne du HTML
+const row = (bill) => {
   return (`
     <tr>
       <td>${bill.type}</td>
@@ -19,33 +19,8 @@ const row = (bill) => { // retourne du HTML
     `)
   }
 
-// Fonction pour classer par ordre décroissant
-function sortByDesc(property){
-  return function(a, b){
-      if(a[property] < b[property]){
-          return -1;
-      }else if(a[property] > b[property]){
-          return 1;
-      }else{
-          return 0;   
-      }
-  }
-}
-
-const rows = (data) => { // retourne du HTML
-  // on crée une copie de l'array data[] dans lequel on retire les éléments qui ont une propriété name qui est null
-  const data2 = data.filter(d => d.name != null);
-  // on les classe par ordre décroissant, grâce à la propriété dateForSort, qui a été ajoutée dans la méthode getBills (Bills.js)
-  data2.sort((a, b) => {
-    if (a.dateForSort < b.dateForSort) {
-      return 1;
-    }
-    if (a.dateForSort > b.dateForSort) {
-      return -1;
-    }
-    return 0;
-  });
-  return (data2 && data2.length) ? data2.map(bill => row(bill)).join("") : ""
+const rows = (data) => {
+  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {

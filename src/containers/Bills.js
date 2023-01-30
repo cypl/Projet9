@@ -39,7 +39,6 @@ export default class {
               return {
                 ...doc,
                 date: formatDate(doc.date),
-                dateForSort: doc.date,
                 status: formatStatus(doc.status)
               }
             } catch(e) {
@@ -49,7 +48,6 @@ export default class {
               return {
                 ...doc,
                 date: doc.date,
-                dateForSort: doc.date,
                 status: formatStatus(doc.status)
               }
             }
