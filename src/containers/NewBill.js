@@ -44,7 +44,7 @@ export default class NewBill {
           this.fileName = fileName
         }).catch(error => console.error(error))
     } else {
-      // si ce n'est pas le cas, on affiche une alerte avec un message d'erreur.
+      // si ce n'est pas le cas, on affiche une alerte avec un message d'erreur, et on vide le champ.
       alert("Ce type de fichier n'est pas valide, essayez avec un fichier .jpg, .jpeg ou .png.");
       e.target.value = "";
       return false;
