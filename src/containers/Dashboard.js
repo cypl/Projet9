@@ -72,6 +72,8 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+    this.stateOpen = [false, false, false];
+    this.currentBill = null;
     $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
     $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
     $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
@@ -92,33 +94,30 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-    if (this.counter === undefined || this.id !== bill.id) this.counter = 0
-    if (this.id === undefined || this.id !== bill.id) this.id = bill.id
-    
-    // si l'élément a déjà été cliqué
-    if(this.id == bill.id && this.counter === 1){
-      $(`#open-bill${this.id}`).css({ background: '#0D5AE5' })
-      $('.dashboard-right-container div').html(`
-        <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
-      `)
-      $('.vertical-navbar').css({ height: '120vh' })
-      this.counter = 0
-    } 
-    
-    // si l'élément est cliqué pour la première fois
-    else {
+    // supression du système de compteur et mise en place de currentBill pour définir le ticket courant
+    // s'il n'y en a pas d'ouvert il est "null" 
+    if(this.currentBill === null){
+      // ouvre le ticket
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
-      $('.vertical-navbar').css({ height: '150vh' })
-      $('#icon-eye-d').click(this.handleClickIconEye)
-      $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
-      $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
-      this.counter ++
+        $('.vertical-navbar').css({ height: '150vh' })
+        $('#icon-eye-d').click(this.handleClickIconEye)
+        $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
+        $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
+      this.currentBill === bill
+    } 
+    // ferme lee ticket
+    else {
+      $(`#open-bill${this.id}`).css({ background: '#0D5AE5' })
+      $('.dashboard-right-container div').html(`
+        <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
+      `)
+      $('.vertical-navbar').css({ height: '120vh' })
+      this.currentBill === null
     }
-    
   }
 
   handleAcceptSubmit = (e, bill) => {
@@ -141,27 +140,25 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
+
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
+    // suppression du système de compteur
     if (this.index === undefined || this.index !== index) this.index = index
-    if (this.counter % 2 === 0) {
+    // et mise en place d'un array stateOpen, pour définir quel groupe de tickets est ouvert
+    if(this.stateOpen[this.index - 1] != true){
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
-      $(`#status-bills-container${this.index}`)
-        .html(cards(filteredBills(bills, getStatus(this.index))))
-      this.counter ++
+      $(`#status-bills-container${this.index}`).html(cards(filteredBills(bills, getStatus(this.index))))
+      this.stateOpen[this.index - 1] = true;
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
-      $(`#status-bills-container${this.index}`)
-        .html("")
-      this.counter ++
+      $(`#status-bills-container${this.index}`).html("")
+      this.stateOpen[this.index - 1] = false;
     }
-
+    // les tickets s'ouvrent ici :
     bills.forEach(bill => {
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
     })
-
     return bills
-
   }
 
   getBillsAllUsers = () => {
