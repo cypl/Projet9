@@ -10,10 +10,16 @@ export default class NewBill {
     formNewBill.addEventListener("submit", this.handleSubmit)
     const file = this.document.querySelector(`input[data-testid="file"]`)
     file.addEventListener("change", this.handleChangeFile)
+    const navBillsList = document.querySelector("#layout-icon1")
+    if (navBillsList) navBillsList.addEventListener('click', this.handleClickBillsList)
     this.fileUrl = null
     this.fileName = null
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
+  }
+
+  handleClickBillsList = () => {
+    this.onNavigate(ROUTES_PATH['Bills'])
   }
 
   handleChangeFile = e => {

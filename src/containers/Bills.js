@@ -8,13 +8,16 @@ export default class {
     this.onNavigate = onNavigate
     this.store = store
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
+    const navNewBill = document.querySelector("#layout-icon2")
     if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
+    if (navNewBill) navNewBill.addEventListener('click', this.handleClickNewBill)
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
     if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconEye(icon))
     })
     new Logout({ document, localStorage, onNavigate })
   }
+
 
   handleClickNewBill = () => {
     this.onNavigate(ROUTES_PATH['NewBill'])
