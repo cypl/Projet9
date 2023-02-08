@@ -1,7 +1,5 @@
-node_modules
-coverage
-.idea
 
 # OS generated files #
 ######################
 .DS_Store
+node_modules

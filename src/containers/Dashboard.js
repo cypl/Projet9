@@ -99,24 +99,24 @@ export default class {
     if(this.currentBill === null){
       // ouvre le ticket
       bills.forEach(b => {
-        $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
+        $(`#open-bill${b.id}`).css({ background: '#0D5AE5' }) // bleu
       })
-      $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
+      $(`#open-bill${bill.id}`).css({ background: '#2A2B35' }) // gris
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
         $('.vertical-navbar').css({ height: '150vh' })
         $('#icon-eye-d').click(this.handleClickIconEye)
         $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
         $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
-      this.currentBill === bill
+      this.currentBill = bill
     } 
-    // ferme lee ticket
+    // ferme le ticket
     else {
-      $(`#open-bill${this.id}`).css({ background: '#0D5AE5' })
+      $(`#open-bill${this.id}`).css({ background: '#0D5AE5' }) // bleu
       $('.dashboard-right-container div').html(`
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
-      this.currentBill === null
+      this.currentBill = null
     }
   }
 

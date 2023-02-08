@@ -24,19 +24,21 @@ const rows = (data) => {
   // On peut les ré-ordonner par date, mais le formatage de la date ne le permet pas.
   // On peut ajouter une propriété date "dateForSort" dans la méthode getBills, qui aura un format permettant de ré-ordonner les données (dans ./containers/Bills.js).
   // On crée une copie de l'array data[] dans lequel on retire les éléments qui ont une propriété name qui est null.
+  if(!data || !data.length){
+    return ""
+  }
   const data2 = data.filter(d => d.name != null);
+  if(!data2 || !data2.length){
+    return ""
+  }
   // On les classe par ordre décroissant, grâce à la propriété dateForSort.
   data2.sort((a, b) => {
-    if (a.dateForSort < b.dateForSort) {
-      return 1;
-    }
-    if (a.dateForSort > b.dateForSort) {
-      return -1;
-    }
-    return 0;
+    const dateA = a.dateForSort ?? a.date
+    const dateB = b.dateForSort ?? b.date
+    return new Date(dateB)-new Date(dateA)
   });
   // on remplace "data" par "data2"
-  return (data2 && data2.length) ? data2.map(bill => row(bill)).join("") : ""
+  return data2.map(bill => row(bill)).join("")
 }
 
 export default ({ data: bills, loading, error }) => {
