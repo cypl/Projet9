@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
+import { getByTestId, screen } from "@testing-library/dom"
 import DashboardFormUI from "../views/DashboardFormUI.js"
 import { formatDate } from "../app/format.js"
 
@@ -75,5 +75,42 @@ describe('Given I am connected as an Admin and I am on Dashboard Page', () => {
       expect(screen.getByText(bill.commentAdmin)).toBeTruthy()
     })
   })
-})
+  // Ajout de test  
+  describe('When bill file has an accepted extension', () => {
+    test(('Then, it shouldnt show admin warning'), () => {
+      const html = DashboardFormUI(bill)
+      document.body.innerHTML = html
+      expect(screen.queryByText("Mauvais format de fichier.")).toBeFalsy()
+    })
+  })
+  // Ajout de test
+  describe('When bill file has an accepted extension', () => {
+    test(('Then, it should displays file name when file name is not "null"'), () => {
+      const html = DashboardFormUI(bill)
+      document.body.innerHTML = html
+      const expectedOutput = `<div class='input-field input-flex file-flex'>
+              <span id="file-name-admin">${bill.fileName}</span>`;
+      expect(expectedOutput).toBeTruthy()
+    })
+  })
+  // Ajout de test
+  // describe('When bill file has an accepted extension', () => {
+  //   test(('Then, it should displays file name when file name is not "null"'), () => {
+  //     bill = { fileName: 'null' };
+  //     const html = DashboardFormUI(bill)
+  //     document.body.innerHTML = html
+  //     const expectedOutput = `<div class='input-field input-flex file-flex file-flex--error'>
+  //     <span id="file-name-admin">Mauvais format de fichier.</span>`;
+  //     expect(expectedOutput).toBeTruthy()
+  //   })
+  // })
 
+  describe('When bill file has an accepted extension', () => {
+    test(('Then, it should displays file name when file name is not "null"'), () => {
+      const html = DashboardFormUI(bill)
+      document.body.innerHTML = html
+      const expectedOutput = `${bill.fileName}`
+      expect(screen.getByTestId("file-name-admin-test")).toBeTruthy()
+    })
+  })
+})

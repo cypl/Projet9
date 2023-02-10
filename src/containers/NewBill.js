@@ -10,17 +10,21 @@ export default class NewBill {
     formNewBill.addEventListener("submit", this.handleSubmit)
     const file = this.document.querySelector(`input[data-testid="file"]`)
     file.addEventListener("change", this.handleChangeFile)
-    const navBillsList = document.querySelector("#layout-icon1")
-    if (navBillsList) navBillsList.addEventListener('click', this.handleClickBillsList)
+      const navBillsList = document.querySelector("#layout-icon1")
+      if (navBillsList) navBillsList.addEventListener('click', this.handleClickBillsList)
     this.fileUrl = null
     this.fileName = null
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
 
+  /**
+   * Méthode qui permet de revenir sur la page qui liste des factures
+   */
   handleClickBillsList = () => {
     this.onNavigate(ROUTES_PATH['Bills'])
   }
+
 
   handleChangeFile = e => {
     e.preventDefault()
@@ -57,6 +61,10 @@ export default class NewBill {
     }
   }
 
+  /**
+   * Méthode qui permet de d'enregistrer les données au submit, et de créer une nouvelle “bill”
+   * @param {*} e correspond au clic sur le bouton submit
+   */
   handleSubmit = e => {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
