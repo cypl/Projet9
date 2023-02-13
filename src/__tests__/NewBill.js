@@ -12,23 +12,21 @@ import { ROUTES_PATH, ROUTES } from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import{mockedBills} from '../__mocks__/store.js';
 
-// on initie onNavigate
-const onNavigate = (pathname) => {
-  document.body.innerHTML = ROUTES({ pathname });
-};
+console.log(jest.fn(mockedBills))
 
-// on simule localstorage pour un employé
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-});
-window.localStorage.setItem(
-  'user',
-  JSON.stringify({
-    type: 'Employee',
-    email: "test@example.com",
-  })
-);
-
+beforeAll(() => {
+  // on simule localstorage pour un employé connecté
+  Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock,
+  });
+  window.localStorage.setItem(
+    'user',
+    JSON.stringify({
+      type: 'Employee',
+      email: "test@example.com",
+    })
+  );
+})
 
 beforeEach(() => {
   // On retourne le HTML de la page avant chaque test
@@ -37,6 +35,8 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  // On vide le HTML de la page après chaque test
+  document.body.innerHTML = ""
 })
 
 
@@ -45,7 +45,7 @@ describe("Given I am connected as an employee", () => {
   // Suite de tests pour vérifier que la page contient bien les bons éléments d'interface pour réaliser nos tests
   describe('When I am on New Bill page', () => {
     test('Then, the New Bill page should be displayed', () => {
-      expect(screen.getByText('Envoyer une note de frais')).toBeTruthy()
+      expect(screen.getByText("Envoyer une note de frais")).toBeVisible()
     })
     test('Then, the New Bill page form should contain a form with 9 elements', () => {
       // console.log(screen.getByTestId("form-new-bill").length)
@@ -53,6 +53,39 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
+
+  describe("When I submit the form", () => {
+    test("Then, the imported file should have an accepted format", () => {
+
+    })
+    test("Then, the imported file should have an accepted format", () => {
+
+    })
+    test("Then, bill object should be well formatted", () => {
+
+    })
+    test("Then, the page is correctly redirected to Bills page", () => {
+      const form = screen.getByTestId("form-new-bill")
+      const submitButton = screen.getByText("Envoyer")
+      // On complète le formulaire
+      // ………
+      // On crée une nouvelle instance de NewBill
+      const myStore = null
+      const myStorage = window.localStorage
+      // on initie onNavigate
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+      const MyBill = new NewBill( { document, onNavigate, store: myStore, localStorage: myStorage })
+      const handleSubmit = jest.fn(MyBill.handleSubmit);
+      // On soumet le formulaire
+      form.addEventListener("submit", handleSubmit)
+      userEvent.click(submitButton)
+      // On est sensé être renvoyé vers la page Bills
+      expect(screen.getByText("Mes notes de frais")).toBeVisible()
+    })
+    
+  })
 
 })
 
