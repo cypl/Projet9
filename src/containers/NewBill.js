@@ -84,6 +84,7 @@ export default class NewBill {
     }
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
+    return bill;
   }
 
   // not need to cover this function by tests

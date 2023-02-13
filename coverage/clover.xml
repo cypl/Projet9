@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1676020130458" clover="3.2.0">
-  <project timestamp="1676020130458" name="All files">
-    <metrics statements="244" coveredstatements="169" conditionals="104" coveredconditionals="72" methods="71" coveredmethods="45" elements="419" coveredelements="286" complexity="0" loc="244" ncloc="244" packages="3" files="16" classes="16"/>
+<coverage generated="1676321710493" clover="3.2.0">
+  <project timestamp="1676321710493" name="All files">
+    <metrics statements="245" coveredstatements="165" conditionals="104" coveredconditionals="72" methods="71" coveredmethods="45" elements="420" coveredelements="282" complexity="0" loc="245" ncloc="245" packages="3" files="16" classes="16"/>
     <package name="constants">
       <metrics statements="8" coveredstatements="8" conditionals="5" coveredconditionals="5" methods="1" coveredmethods="1"/>
       <file name="routes.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/constants/routes.js">
@@ -20,7 +20,7 @@
       </file>
     </package>
     <package name="containers">
-      <metrics statements="199" coveredstatements="125" conditionals="55" coveredconditionals="27" methods="54" coveredmethods="28"/>
+      <metrics statements="200" coveredstatements="121" conditionals="55" coveredconditionals="27" methods="54" coveredmethods="28"/>
       <file name="Bills.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/containers/Bills.js">
         <metrics statements="31" coveredstatements="15" conditionals="10" coveredconditionals="4" methods="8" coveredmethods="2"/>
         <line num="7" count="1" type="stmt"/>
@@ -187,7 +187,7 @@
         <line num="13" count="2" type="stmt"/>
       </file>
       <file name="NewBill.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/containers/NewBill.js">
-        <metrics statements="46" coveredstatements="4" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <metrics statements="47" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="6" count="0" type="stmt"/>
         <line num="7" count="0" type="stmt"/>
         <line num="8" count="0" type="stmt"/>
@@ -201,9 +201,9 @@
         <line num="16" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
         <line num="32" count="0" type="stmt"/>
@@ -222,18 +222,19 @@
         <line num="58" count="0" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
-        <line num="68" count="1" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
         <line num="69" count="0" type="stmt"/>
         <line num="70" count="0" type="stmt"/>
         <line num="71" count="0" type="stmt"/>
         <line num="72" count="0" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
         <line num="86" count="0" type="stmt"/>
-        <line num="90" count="1" type="stmt"/>
-        <line num="91" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="96" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
       </file>
     </package>
     <package name="views">
@@ -291,16 +292,16 @@
       </file>
       <file name="NewBillUI.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/views/NewBillUI.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="2" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
       </file>
       <file name="VerticalLayout.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/views/VerticalLayout.js">
         <metrics statements="6" coveredstatements="6" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
-        <line num="7" count="33" type="stmt"/>
-        <line num="8" count="33" type="cond" truecount="2" falsecount="0"/>
-        <line num="9" count="20" type="stmt"/>
-        <line num="11" count="33" type="cond" truecount="4" falsecount="0"/>
-        <line num="12" count="4" type="stmt"/>
-        <line num="29" count="29" type="stmt"/>
+        <line num="7" count="34" type="stmt"/>
+        <line num="8" count="34" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="22" type="stmt"/>
+        <line num="11" count="34" type="cond" truecount="4" falsecount="0"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="29" count="28" type="stmt"/>
       </file>
     </package>
   </project>
