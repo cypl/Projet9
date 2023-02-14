@@ -82,7 +82,7 @@ describe("Given I am connected as an employee", () => {
       form.addEventListener("submit", handleSubmit)
       userEvent.click(submitButton)
       // On est sensé être renvoyé vers la page Bills
-      expect(screen.getByText("Mes notes de frais")).toBeVisible()
+      expect(screen.getByText("Mes notes de frais")).toBeVisible() // = Titre de la page Bills visible
     })
     
   })
