@@ -29,7 +29,7 @@ export default class NewBill {
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    const fileName = file.name
+    if(!file) return false
     // L'objet file contient une propriété qui permet de définir l'extension.
     // On peut donc lister les extensions que l'on souhaite autoriser :
     const allowedExtensions = ["image/jpg","image/jpeg","image/png"]
@@ -39,20 +39,6 @@ export default class NewBill {
       const email = JSON.parse(localStorage.getItem("user")).email
       formData.append('file', file)
       formData.append('email', email)
-      this.store
-        .bills()
-        .create({
-          data: formData,
-          headers: {
-            noContentType: true
-          }
-        })
-        .then(({fileUrl, key}) => {
-          console.log(fileUrl)
-          this.billId = key
-          this.fileUrl = fileUrl
-          this.fileName = fileName
-        }).catch(error => console.error(error))
     } else {
       // si ce n'est pas le cas, on affiche une alerte avec un message d'erreur, et on vide le champ.
       alert("Ce type de fichier n'est pas valide, essayez avec un fichier .jpg, .jpeg ou .png.");
@@ -69,6 +55,20 @@ export default class NewBill {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
+    // this.store
+        // .bills()
+        // .create({
+        //   data: formData,
+        //   headers: {
+        //     noContentType: true
+        //   }
+        // })
+        // .then(({fileUrl, key}) => {
+        //   console.log(fileUrl)
+        //   this.billId = key
+        //   this.fileUrl = fileUrl
+        //   this.fileName = fileName
+        // }).catch(error => console.error(error))
     const bill = {
       email,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
