@@ -39,11 +39,23 @@ export default class NewBill {
       const email = JSON.parse(localStorage.getItem("user")).email
       formData.append('file', file)
       formData.append('email', email)
+      // si l'utilisateur a déjà tenté d'importer un fichier mais qu'il avait un mauvais format, on retire le message d'erreur
+      if(this.document.querySelector(`input[data-testid="file"]`).classList.contains("error-field")){
+        this.document.querySelector(`input[data-testid="file"]`).classList.remove("error-field")
+      }
+      if(document.getElementById("file-field-error")){document.getElementById("file-field-error").remove()}
     } else {
-      // si ce n'est pas le cas, on affiche une alerte avec un message d'erreur, et on vide le champ.
-      alert("Ce type de fichier n'est pas valide, essayez avec un fichier .jpg, .jpeg ou .png.");
-      e.target.value = "";
-      return false;
+      // si ce n'est pas le cas, on affiche une alerte avec un message d'erreur.
+      const fileFieldContainer = this.document.querySelector(`input[data-testid="file"]`).parentNode
+      const fileFieldError = document.createElement("p")
+      fileFieldError.textContent = "Ce type de fichier n'est pas valide, essayez avec un fichier .jpg, .jpeg ou .png."
+      fileFieldError.setAttribute("id","file-field-error")
+      fileFieldContainer.append(fileFieldError)
+      const fileField = this.document.querySelector(`input[data-testid="file"]`)
+      fileField.classList.add("error-field")
+      // On vide le champs
+      e.target.value = ""
+      return false
     }
   }
 

@@ -61,3 +61,13 @@ textarea:focus, input:focus, select:focus {
 *[placeholder] {
   color: #0E5AE5 !important;
 }
+
+.error-field{
+  border-color: rgb(253, 69, 69)!important;
+}
+#file-field-error{
+  margin-bottom: 0;
+  color: rgb(253, 69, 69);
+  font-size: 12px;
+  margin-top: 7px;
+}

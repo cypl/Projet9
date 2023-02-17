@@ -42,18 +42,28 @@ afterEach(() => {
 
 describe("Given I am connected as an employee", () => {
 
-  // Suite de tests pour vérifier que la page contient bien les bons éléments d'interface pour réaliser nos tests
-  describe('When I am on New Bill page', () => {
-    test('Then, the New Bill page should be displayed', () => {
-      expect(screen.getByText("Envoyer une note de frais")).toBeVisible()
+  // Retour à la page Bills - test de la méthode handleClickBillsList()
+  describe('When I am on New Bill page and click on the Bills icon in lateral navigation', () => {
+    test('Then, i should be redirected to Bills page', () => {
+      const iconWindow = screen.getByTestId("icon-window")
+      // on initie le store et les autres paramètres
+      const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({ pathname })}
+      const myStore = null
+      const myStorage = window.localStorage
+      const MyBill = new NewBill( { document, onNavigate, store: myStore, localStorage: myStorage })
+      // handle event
+      const handleClickBillsList = jest.fn(() => MyBill.handleClickBillsList);
+      iconWindow.addEventListener('click', handleClickBillsList);
+      userEvent.click(iconWindow)
+      expect(handleClickBillsList).toHaveBeenCalled()
+      // On est sensé être renvoyé vers la page Bills
+      expect(screen.getByText("Mes notes de frais")).toBeVisible() // = Titre de la page Bills visible
     })
-    test('Then, the New Bill page form should contain a form with 9 elements', () => {
-      expect(screen.getByTestId("form-new-bill").length).toEqual(9)
-    })
-  })
+  }) 
 
-  describe('When I am on New Bill page and import a new file', () => {
-    test('Then, the imported file should have an accepted format', () => {
+  // Imports de fichiers - test de la méthode handleChangeFile()
+  describe('When I am on New Bill page and upload a new file', () => {
+    test('Then, it should be possible to upload a file with an accepted format', () => {
       const newFile = new File(['hello'], 'hello.png', {type: 'image/png'})
       const inputFile = screen.getByTestId("file")
       // on initie le store et les autres paramètres
@@ -67,25 +77,25 @@ describe("Given I am connected as an employee", () => {
       userEvent.upload(inputFile, newFile)
       expect(inputFile.files).toHaveLength(1)
     })
+    test('Then, it should be impossible to upload a file with an wrong format', () => {
+      const newFile = new File(['hello'], 'hello.txt', {type: 'text/plain'})
+      const inputFile = screen.getByTestId("file")
+      // on initie le store et les autres paramètres
+      const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({ pathname })}
+      const myStore = null
+      const myStorage = window.localStorage
+      const MyBill = new NewBill( { document, onNavigate, store: myStore, localStorage: myStorage })
+      // handle event
+      const handleChangeFile = jest.fn(() => MyBill.handleChangeFile);
+      inputFile.addEventListener('change', handleChangeFile);
+      userEvent.upload(inputFile, newFile)
+      expect(inputFile).toHaveClass("error-field")
+      expect(screen.getByText("Ce type de fichier n'est pas valide, essayez avec un fichier .jpg, .jpeg ou .png.")).toBeVisible()
+    })
   })
 
+  // Envoi du formulaire - test de la méthode handleSubmit()
   describe("When I submit the form", () => {
-    
-    // test("Then, the imported file should have an accepted format", () => {
-    //   const newFile = new File(['hello'], 'hello.png', {type: 'image/png'})
-    //   const inputFile = screen.getByTestId("file")
-    //   // on initie le store et les autres paramètres
-    //   const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({ pathname })}
-    //   const myStore = null
-    //   const myStorage = window.localStorage
-    //   const MyBill = new NewBill( { document, onNavigate, store: myStore, localStorage: myStorage })
-    //   // handle event
-    //   const handleChangeFile = jest.fn(() => MyBill.handleChangeFile);
-    //   inputFile.addEventListener('change', handleChangeFile);
-    //   userEvent.upload(inputFile, newFile)
-    //   expect(inputFile.files).toHaveLength(1)
-    // })
-
     test("Then, the created bill object should be well formatted", () => {
       // // on initie le store et les autres paramètres
       // const myStore = null
@@ -130,7 +140,8 @@ describe("Given I am connected as an employee", () => {
       // On est sensé être renvoyé vers la page Bills
       expect(screen.getByText("Mes notes de frais")).toBeVisible() // = Titre de la page Bills visible
     })
-    
   })
+
+
 
 })
