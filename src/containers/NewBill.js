@@ -6,6 +6,7 @@ export default class NewBill {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+    this.formData = null
     const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
     formNewBill.addEventListener("submit", this.handleSubmit)
     const file = this.document.querySelector(`input[data-testid="file"]`)
@@ -25,20 +26,26 @@ export default class NewBill {
     this.onNavigate(ROUTES_PATH['Bills'])
   }
 
-
+  /**
+   * Méthode qui permet de gérer le chargement d'un fichier dans le formulaire.
+   * @param {*} e correspond à l'évènement
+   * @returns 
+   */
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const filePath = e.target.value.split(/\\/g)
+    const fileName = filePath[filePath.length-1]
     if(!file) return false
     // L'objet file contient une propriété qui permet de définir l'extension.
     // On peut donc lister les extensions que l'on souhaite autoriser :
     const allowedExtensions = ["image/jpg","image/jpeg","image/png"]
     // Et vérifier si file contient une propriété extension autorisée :
     if(allowedExtensions.includes(file.type)){
-      const formData = new FormData()
       const email = JSON.parse(localStorage.getItem("user")).email
-      formData.append('file', file)
-      formData.append('email', email)
+      this.formData = new FormData()
+      this.formData.append('file', file)
+      this.formData.append('email', email)
       // si l'utilisateur a déjà tenté d'importer un fichier mais qu'il avait un mauvais format, on retire le message d'erreur
       if(this.document.querySelector(`input[data-testid="file"]`).classList.contains("error-field")){
         this.document.querySelector(`input[data-testid="file"]`).classList.remove("error-field")
@@ -60,6 +67,20 @@ export default class NewBill {
   }
 
   /**
+   * Méthode qui permet de valider le formulaire
+   * @param {Object} bill 
+   * @returns 
+   */
+  validateBill(bill){
+    if (!this.fileName){ // pour l'instant on ne fait qu'une vérification sur l'import du fichier
+      return false
+    } else {
+      return true
+    } 
+    return true
+  }
+
+  /**
    * Méthode qui permet de d'enregistrer les données au submit, et de créer une nouvelle “bill”
    * @param {*} e correspond au clic sur le bouton submit
    */
@@ -67,20 +88,6 @@ export default class NewBill {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
-    // this.store
-        // .bills()
-        // .create({
-        //   data: formData,
-        //   headers: {
-        //     noContentType: true
-        //   }
-        // })
-        // .then(({fileUrl, key}) => {
-        //   console.log(fileUrl)
-        //   this.billId = key
-        //   this.fileUrl = fileUrl
-        //   this.fileName = fileName
-        // }).catch(error => console.error(error))
     const bill = {
       email,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
@@ -94,9 +101,27 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-    this.updateBill(bill)
-    this.onNavigate(ROUTES_PATH['Bills'])
-    return bill;
+
+    // if (!this.fileName) return false // s'il n'y a pas de fichier, impossible de soumettre le formulaire.
+    if(this.validateBill(bill)){
+      this.store 
+        .bills()
+        .create({
+          data: this.formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+        .then(({ fileUrl, key }) => {
+          this.billId = key;
+          this.fileUrl = fileUrl;
+          this.fileName = fileName;
+        })
+        .catch(error => console.error(error))
+      this.updateBill(bill)
+      this.onNavigate(ROUTES_PATH['Bills'])
+      return bill;
+    }
   }
 
   // not need to cover this function by tests
@@ -110,5 +135,7 @@ export default class NewBill {
       })
       .catch(error => console.error(error))
     }
+    return bill
   }
+
 }

@@ -24,6 +24,9 @@ export default class {
   }
 
   handleClickIconEye = (icon) => {
+    if(typeof jest !== 'undefined') {
+      $.fn.modal = jest.fn()
+    }
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
     if(billUrl.endsWith('null')){
@@ -62,7 +65,7 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
+          //console.log('length', bills.length)
         return bills
       })
     }

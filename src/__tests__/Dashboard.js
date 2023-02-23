@@ -75,7 +75,7 @@ describe('Given I am connected as an Admin', () => {
       icon1.addEventListener('click', handleShowTickets1)
       userEvent.click(icon1)
       expect(handleShowTickets1).toHaveBeenCalled()
-      await waitFor(() => screen.getByTestId(`open-bill47qAXb6fIm2zOKkLzMro`) )
+      await (() => screen.getByTestId(`open-bill47qAXb6fIm2zOKkLzMro`) )
       expect(screen.getByTestId(`open-bill47qAXb6fIm2zOKkLzMro`)).toBeTruthy()
       icon2.addEventListener('click', handleShowTickets2)
       userEvent.click(icon2)
@@ -274,6 +274,7 @@ describe("Given I am a user connected as Admin", () => {
       document.body.appendChild(root)
       router()
     })
+
     test("fetches bills from an API and fails with 404 message error", async () => {
 
       mockStore.bills.mockImplementationOnce(() => {

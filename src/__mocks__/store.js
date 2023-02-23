@@ -14,7 +14,7 @@ const mockedBills = {
       "commentAdmin": "ok",
       "email": "a@a",
       "pct": 20
-    },
+    },  
       {
         "id": "BeKy5Mo4jkmdfPGYpTxZ",
         "vat": "",

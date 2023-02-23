@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>1/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -166,7 +166,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,7 +187,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,7 +269,7 @@ import pctIcon from '../assets/svg/pct.js'
 import eyeWhite from '../assets/svg/eye_white.js'
 import { formatDate } from '../app/format.js'
 &nbsp;
-export const modal = () =&gt; (`
+export const modal = <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >`</span>
   &lt;div class="modal fade" id="modaleFileAdmin1" data-testid="modaleFileAdmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"&gt;
     &lt;div class="modal-dialog modal-dialog-centered modal-lg" role="document"&gt;
       &lt;div class="modal-content"&gt;
@@ -286,11 +286,11 @@ export const modal = () =&gt; (`
   &lt;/div&gt;
   `)
 &nbsp;
-export default (bill) =&gt; {
+export default <span class="fstat-no" title="function not covered" >(b</span>ill) =&gt; {
 &nbsp;
   // Si le nom de fichier est "null" on précise qu'il s'agit d'un mauvais format
 &nbsp;
-  return (`
+<span class="cstat-no" title="statement not covered" >  return (`</span>
     &lt;div class="container dashboard-form" data-testid="dashboard-form"&gt;
       &lt;div class="row"&gt;
         &lt;div class="col-sm" id="dashboard-form-col1"&gt;
@@ -334,8 +334,8 @@ export default (bill) =&gt; {
       &lt;div class="row"&gt;
         &lt;div class="col-sm"&gt;
           &lt;label for="file" class="bold-label"&gt;Justificatif&lt;/label&gt;
-            &lt;div class='input-field input-flex file-flex${bill.fileName === "null" ? (<span class="branch-0 cbranch-no" title="branch not covered" >" file-flex--error")</span> : ("")}'&gt;
-            &lt;span id="file-name-admin" data-testid="file-name-admin-test"&gt;${bill.fileName === "null" ? (<span class="branch-0 cbranch-no" title="branch not covered" >"Mauvais format de fichier.")</span> : (bill.fileName)}&lt;/span&gt;
+            &lt;div class='input-field input-flex file-flex${bill.fileName === "null" ? (" file-flex--error") : ("")}'&gt;
+            &lt;span id="file-name-admin" data-testid="file-name-admin-test"&gt;${bill.fileName === "null" ? ("Mauvais format de fichier.") : (bill.fileName)}&lt;/span&gt;
             &lt;div class='icons-container'&gt;
               &lt;span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${bill.fileUrl}"&gt; ${eyeWhite} &lt;/span&gt;
             &lt;/div&gt;
@@ -373,7 +373,7 @@ export default (bill) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Feb 17 2023 10:46:52 GMT+0100 (heure normale d’Europe centrale)
+                at Thu Feb 23 2023 13:51:20 GMT+0100 (heure normale d’Europe centrale)
             </div>
         </div>
         <script src="../prettify.js"></script>
