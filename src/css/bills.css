@@ -50,8 +50,8 @@
   border: 2px solid #F3F5FA;
   box-sizing: border-box;
   border-radius: 10px;
-  padding-bottom: 16px;
-  height: 70vh;
+  /* padding-bottom: 16px; */
+  /* height: 70vh; */
 }
 
 .icon-actions {

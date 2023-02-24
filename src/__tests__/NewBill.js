@@ -129,7 +129,6 @@ describe("Given I am connected as an employee", () => {
     test("If the form is complete, then the page should redirect to Bills page.", () => {
       // on crée une instance de newBill
       const MyBill = myBill()
-
       // on récupère l'email de l'utilisateur dans local storage
       const user = JSON.parse(localStorage.getItem('user'))
       // Question : Pourquoi est-ce que je dois parser 2 fois le contenu de local storage pour obtenir un objet exploitable ?

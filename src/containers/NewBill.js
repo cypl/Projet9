@@ -106,6 +106,7 @@ export default class NewBill {
     // s'il n'y a pas de fichier, impossible de soumettre le formulaire.
     if (this.fileName){
       this.updateBill(bill)
+      return bill
     } else { return false }
   }
 
