@@ -46,6 +46,22 @@ export default class NewBill {
       this.formData = new FormData()
       this.formData.append('file', file)
       this.formData.append('email', email)
+      // Si le fichier a un bon format on peut l'envoyer vers le store, mais l'update se fait à la validation du formulaire
+      this.store 
+        .bills()
+        .create({
+          data: this.formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+        .then(({ fileUrl, key }) => {
+          this.billId = key;
+          this.fileUrl = fileUrl;
+          this.fileName = fileName;
+        })
+        .catch(error => console.error(error))
+      
       // si l'utilisateur a déjà tenté d'importer un fichier mais qu'il avait un mauvais format, on retire le message d'erreur
       if(this.document.querySelector(`input[data-testid="file"]`).classList.contains("error-field")){
         this.document.querySelector(`input[data-testid="file"]`).classList.remove("error-field")
@@ -64,20 +80,6 @@ export default class NewBill {
       e.target.value = ""
       return false
     }
-  }
-
-  /**
-   * Méthode qui permet de valider le formulaire
-   * @param {Object} bill 
-   * @returns 
-   */
-  validateBill(bill){
-    if (!this.fileName){ // pour l'instant on ne fait qu'une vérification sur l'import du fichier
-      return false
-    } else {
-      return true
-    } 
-    return true
   }
 
   /**
@@ -101,27 +103,10 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-
-    // if (!this.fileName) return false // s'il n'y a pas de fichier, impossible de soumettre le formulaire.
-    if(this.validateBill(bill)){
-      this.store 
-        .bills()
-        .create({
-          data: this.formData,
-          headers: {
-            noContentType: true,
-          },
-        })
-        .then(({ fileUrl, key }) => {
-          this.billId = key;
-          this.fileUrl = fileUrl;
-          this.fileName = fileName;
-        })
-        .catch(error => console.error(error))
+    // s'il n'y a pas de fichier, impossible de soumettre le formulaire.
+    if (this.fileName){
       this.updateBill(bill)
-      this.onNavigate(ROUTES_PATH['Bills'])
-      return bill;
-    }
+    } else { return false }
   }
 
   // not need to cover this function by tests
