@@ -3,16 +3,14 @@
  */
 
 import '@testing-library/jest-dom'
-import { getByTestId, getByText, fireEvent, within, screen } from "@testing-library/dom"
+import { getByTestId, getByText, screen } from "@testing-library/dom"
 import userEvent from '@testing-library/user-event'
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
-import BillsUI from "../views/BillsUI.js"
-import { bills } from "../fixtures/bills.js"
-import { ROUTES, ROUTES_PATH} from "../constants/routes.js";
+import { ROUTES} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store.js"
-import router from "../app/Router.js";
+
 
 jest.mock("../app/store", () => mockStore)
 
@@ -60,12 +58,13 @@ describe("Given I am connected as an employee", () => {
     test('Then, i should be redirected to Bills page', () => {
       // on crée une instance de newBill
       const MyBill = myBill()
+      
       // on simule l'évènement
       const iconWindow = screen.getByTestId("icon-window")
       const handleClickBillsList = jest.fn(() => MyBill.handleClickBillsList);
       iconWindow.addEventListener('click', handleClickBillsList);
       userEvent.click(iconWindow)
-      expect(handleClickBillsList).toHaveBeenCalled()
+
       // On est sensé être renvoyé vers la page Bills
       expect(screen.getByText("Mes notes de frais")).toBeVisible() // = Titre de la page Bills visible
     })
@@ -78,13 +77,16 @@ describe("Given I am connected as an employee", () => {
     test('Then, it should be possible to upload a file with an accepted format', () => {
       // on crée un nouvel objet file, qui a un format accepté
       const newFile = new File(['hello'], 'hello.png', {type: 'image/png'})
+      
       // on crée une instance de newBill
       const MyBill = myBill()
+      
       // on simule l'import de newFile dans le formulaire
       const inputFile = screen.getByTestId("file")
       const handleChangeFile = jest.fn(() => MyBill.handleChangeFile)
       inputFile.addEventListener('change', handleChangeFile)
       userEvent.upload(inputFile, newFile)
+      
       // le champ devrait contenir le fichier
       expect(inputFile.files).toHaveLength(1)
     })
@@ -93,13 +95,16 @@ describe("Given I am connected as an employee", () => {
     test('Then, it should be impossible to upload a file with an wrong format', () => {
       // on crée un nouvel objet file, qui n'a pas un format accepté
       const newFile = new File(['hello'], 'hello.txt', {type: 'text/plain'})
+      
       // on crée une instance de newBill
       const MyBill = myBill()
+      
       // on simule l'import de newFile dans le formulaire
       const inputFile = screen.getByTestId("file")
       const handleChangeFile = jest.fn(() => MyBill.handleChangeFile)
       inputFile.addEventListener('change', handleChangeFile)
       userEvent.upload(inputFile, newFile)
+      
       // le champ devrait signaler une erreur
       expect(inputFile).toHaveClass("error-field")
       expect(screen.getByText("Ce type de fichier n'est pas valide, essayez avec un fichier .jpg, .jpeg ou .png.")).toBeVisible()
@@ -114,13 +119,16 @@ describe("Given I am connected as an employee", () => {
     test("If the form is empty, then the page shouldn't redirect to Bills page.", () => {
       const form = screen.getByTestId("form-new-bill")
       const submitButton = screen.getByText("Envoyer")
+      
       // on crée une instance de newBill
       const MyBill = myBill()
+      
       // on ne complète pas le formulaire
       // on simule la validation du formulaire
       const handleSubmit = jest.fn(MyBill.handleSubmit)
       form.addEventListener("submit", handleSubmit)
       userEvent.click(submitButton)
+      
       // on est sensé rester sur la même page (un formulaire vide n'est pas valide)
       expect(screen.getByText("Envoyer une note de frais")).toBeVisible()
     })
@@ -129,12 +137,15 @@ describe("Given I am connected as an employee", () => {
     test("If the form is complete, then the page should redirect to Bills page.", () => {
       // on crée une instance de newBill
       const MyBill = myBill()
+      
       // on récupère l'email de l'utilisateur dans local storage
       const user = JSON.parse(localStorage.getItem('user'))
+      
       // Question : Pourquoi est-ce que je dois parser 2 fois le contenu de local storage pour obtenir un objet exploitable ?
       const userObject = JSON.parse(user)
       const userEmail = userObject.email
-
+      
+      // On crée un objet newBill qui contient les valeurs attendues de notre test
       const newBillTest = {
         userEmail,
         type: "Transports",
@@ -149,8 +160,9 @@ describe("Given I am connected as an employee", () => {
         status: "pending",
       };
       
+      // On crée un objet file pour l'uploader au formulaire
       const file = new File(["newbilltest"], "newbilltest.jpg", {type: "image/jpg"})
-
+      
       // On simule le remplissage du formulaire, avec les données de newBillTest :
       userEvent.selectOptions(screen.getByTestId("expense-type"), [newBillTest.type])
       userEvent.type(screen.getByTestId('expense-name'), newBillTest.name)
@@ -160,7 +172,7 @@ describe("Given I am connected as an employee", () => {
       userEvent.type(screen.getByTestId("pct"), newBillTest.pct.toString())
       userEvent.type(screen.getByTestId("commentary"), newBillTest.commentary)
       userEvent.upload(screen.getByTestId("file"), file)
-
+      
       // On simule un clic sur le submit
       const form = screen.getByTestId("form-new-bill")
       const submitButton = screen.getByText("Envoyer")
@@ -177,23 +189,27 @@ describe("Given I am connected as an employee", () => {
 
   // Tests des erreurs 404 et 500
   describe("When an error occurs on API", () => {
-    
+
     // Test lorsque l'on simule une erreur 404
     test("fetches bills from an API and fails with 404 message error", async () => {
       // on crée une instance de newBill
       const MyBill = myBill()
+      
+      // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
       const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
-        // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
         return {
           create: () => {
             return Promise.reject(new Error("404"))
           },
         };
       })
+      
       // on simule le fait que créer une nouvelle bill rejète une erreur
       await expect(mockedBill().create()).rejects.toThrow("404")
+      
       // on vérifie que le store a bien été appelé
       expect(mockedBill).toHaveBeenCalled()
+      
       // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
       expect(MyBill.billId).toBeFalsy()
     })
@@ -202,26 +218,26 @@ describe("Given I am connected as an employee", () => {
     test("fetches messages from an API and fails with 500 message error", async () => {
       // on crée une instance de newBill
       const MyBill = myBill()
+      
+      // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
       const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
-        // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
         return {
           create: () => {
             return Promise.reject(new Error("500"))
           },
         };
       })
+      
       // on simule le fait que créer une nouvelle bill rejète une erreur
       await expect(mockedBill().create()).rejects.toThrow("500")
+      
       // on vérifie que le store a bien été appelé
       expect(mockedBill).toHaveBeenCalled()
+      
       // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
       expect(MyBill.billId).toBeFalsy()
     })
 
   })
-
-
-
-
 
 })

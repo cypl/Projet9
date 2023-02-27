@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1677493853735" clover="3.2.0">
-  <project timestamp="1677493853735" name="All files">
-    <metrics statements="259" coveredstatements="80" conditionals="114" coveredconditionals="18" methods="71" coveredmethods="12" elements="444" coveredelements="110" complexity="0" loc="259" ncloc="259" packages="3" files="16" classes="16"/>
+<coverage generated="1677494874701" clover="3.2.0">
+  <project timestamp="1677494874702" name="All files">
+    <metrics statements="259" coveredstatements="79" conditionals="114" coveredconditionals="18" methods="71" coveredmethods="12" elements="444" coveredelements="109" complexity="0" loc="259" ncloc="259" packages="3" files="16" classes="16"/>
     <package name="constants">
       <metrics statements="8" coveredstatements="4" conditionals="5" coveredconditionals="1" methods="1" coveredmethods="1"/>
       <file name="routes.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/constants/routes.js">
@@ -20,7 +20,7 @@
       </file>
     </package>
     <package name="containers">
-      <metrics statements="214" coveredstatements="61" conditionals="65" coveredconditionals="9" methods="54" coveredmethods="6"/>
+      <metrics statements="214" coveredstatements="60" conditionals="65" coveredconditionals="9" methods="54" coveredmethods="6"/>
       <file name="Bills.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/containers/Bills.js">
         <metrics statements="32" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="8" coveredmethods="0"/>
         <line num="7" count="0" type="stmt"/>
@@ -134,8 +134,8 @@
         <line num="180" count="0" type="stmt"/>
       </file>
       <file name="Login.js" path="/Users/cyrille/Documents/Formation/bill-app/Billed-app-FR-Front/src/containers/Login.js">
-        <metrics statements="41" coveredstatements="1" conditionals="4" coveredconditionals="0" methods="11" coveredmethods="0"/>
-        <line num="3" count="1" type="stmt"/>
+        <metrics statements="41" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="11" coveredmethods="0"/>
+        <line num="3" count="0" type="stmt"/>
         <line num="8" count="0" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
