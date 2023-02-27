@@ -2,20 +2,18 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom'
-import {fireEvent, screen, waitFor} from "@testing-library/dom"
+import {screen, waitFor} from "@testing-library/dom"
 import userEvent from '@testing-library/user-event'
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES, ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store"
-
 import Bills from "../containers/Bills.js";
-
 import router from "../app/Router.js";
 
-jest.mock("../app/store", () => mockStore)
 
+jest.mock("../app/store", () => mockStore)
 
 
 beforeAll(() => {
@@ -71,7 +69,6 @@ describe("Given I am connected as an employee", () => {
       newbillButton.addEventListener("click", handleClickNewBill)
       userEvent.click(newbillButton)
       
-      // expect(handleClickNewBill).toHaveBeenCalled()
       // On est sensé être renvoyé vers la page NewBill
       expect(screen.getByText("Envoyer une note de frais")).toBeVisible() // = Titre de la page NewBill visible
 

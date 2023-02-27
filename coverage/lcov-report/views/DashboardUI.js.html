@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -114,13 +114,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,35 +160,35 @@ import BigBilledIcon from '../assets/svg/big_billed.js'
 import { filteredBills } from '../containers/Dashboard.js'
 import ArrowIcon from '../assets/svg/arrow.js'
 &nbsp;
-export default <span class="fstat-no" title="function not covered" >({</span> data, loading, error }) =&gt; {
+export default ({ data, loading, error }) =&gt; {
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (loading) {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (loading) {
 <span class="cstat-no" title="statement not covered" >    return LoadingPage()</span>
-  } else <span class="cstat-no" title="statement not covered" >if (error) {</span>
+  } else <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {
 <span class="cstat-no" title="statement not covered" >    return ErrorPage(error)</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (`</span>
+  return (`
     &lt;div class='layout'&gt;
       ${VerticalLayout(120)}
       &lt;div class='dashboard-content'&gt;
         &lt;div class='bills-feed'&gt;
           &lt;div class='status-bills-header'&gt;
-            &lt;h3&gt; En attente (${filteredBills(data &amp;&amp; data.bills, "pending").length}) &lt;/h3&gt;
+            &lt;h3&gt; En attente (${filteredBills(data &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >data.bills,</span> "pending").length}) &lt;/h3&gt;
             &lt;span class='arrow-icon' id='arrow-icon1' data-testid='arrow-icon1'&gt;${ArrowIcon}&lt;/span&gt;
           &lt;/div&gt;
           &lt;div class='status-bills-container' id='status-bills-container1'&gt;
           &lt;/div&gt;
           
             &lt;div class='status-bills-header' style='margin-top: 20px;'&gt;
-              &lt;h3&gt; Validé (${filteredBills(data &amp;&amp; data.bills, "accepted").length}) &lt;/h3&gt;
+              &lt;h3&gt; Validé (${filteredBills(data &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >data.bills,</span> "accepted").length}) &lt;/h3&gt;
               &lt;span class='arrow-icon' id='arrow-icon2' data-testid='arrow-icon2'&gt;${ArrowIcon}&lt;/span&gt;
             &lt;/div&gt;
             &lt;div class='status-bills-container' id='status-bills-container2'&gt;
             &lt;/div&gt;
 &nbsp;
             &lt;div class='status-bills-header' style='margin-top: 20px;'&gt;
-              &lt;h3&gt; Refusé (${filteredBills(data &amp;&amp; data.bills, "refused").length}) &lt;/h3&gt;
+              &lt;h3&gt; Refusé (${filteredBills(data &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >data.bills,</span> "refused").length}) &lt;/h3&gt;
               &lt;span class='arrow-icon' id='arrow-icon3' data-testid='arrow-icon3'&gt;${ArrowIcon}&lt;/span&gt;
             &lt;/div&gt;
             &lt;div class='status-bills-container' id='status-bills-container3'&gt;
@@ -208,7 +208,7 @@ export default <span class="fstat-no" title="function not covered" >({</span> da
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Feb 27 2023 11:47:54 GMT+0100 (heure normale d’Europe centrale)
+                at Mon Feb 27 2023 12:03:20 GMT+0100 (heure normale d’Europe centrale)
             </div>
         </div>
         <script src="../prettify.js"></script>
