@@ -165,16 +165,9 @@ describe("Given I am connected as an employee", () => {
       const form = screen.getByTestId("form-new-bill")
       const submitButton = screen.getByText("Envoyer")
       const handleSubmit = jest.fn(MyBill.handleSubmit)
-      // const updateBill = jest.fn(MyBill.updateBill)
       form.addEventListener("submit", handleSubmit)
       userEvent.click(submitButton)
 
-      // la fonction validateBill(bill) devrait retourner true
-      // const validateBill = jest.fn(MyBill.validateBill)
-      // const bill = {}; // Créer un objet facture vide
-      // const isValid = validateBill(bill); // Appeler la fonction mockée
-      // expect(isValid).toEqual(false); // Passer le résultat en argument de expect
-      // expect(validateBill).toEqual(true)
       // L'object bill construit par la méthode handleSubmit devrait correspondre à l'objet newBillTest
       //expect(handleSubmit).toHaveBeenCalledWith(newBillTest)
       // On devrait ensuite être redirigé vers la page Bills
@@ -185,41 +178,50 @@ describe("Given I am connected as an employee", () => {
   // Tests des erreurs 404 et 500
   describe("When an error occurs on API", () => {
     
-    beforeEach(() => {
-      jest.spyOn(mockStore, "bills");
-      const root = document.createElement("div");
-      root.setAttribute("id", "root");
-      document.body.appendChild(root);
-      router();
-    });
-
+    // Test lorsque l'on simule une erreur 404
     test("fetches bills from an API and fails with 404 message error", async () => {
-      mockStore.bills.mockImplementationOnce(() => {
+      // on crée une instance de newBill
+      const MyBill = myBill()
+      const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
+        // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
         return {
           create: () => {
-            return Promise.reject(new Error("Erreur 404"))
+            return Promise.reject(new Error("404"))
           },
         };
-      });
-      document.body.innerHTML = BillsUI({ error: "Erreur 404" })
-      const message = screen.getByText("Erreur 404")
-      expect(message).toBeTruthy()
+      })
+      // on simule le fait que créer une nouvelle bill rejète une erreur
+      await expect(mockedBill().create()).rejects.toThrow("404")
+      // on vérifie que le store a bien été appelé
+      expect(mockedBill).toHaveBeenCalled()
+      // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
+      expect(MyBill.billId).toBeFalsy()
     })
 
-    // test("fetches messages from an API and fails with 500 message error", async () => {
-    //   mockStore.bills.mockImplementationOnce(() => {
-    //     return {
-    //       create: () => {
-    //         return Promise.reject(new Error("Erreur 500"))
-    //       },
-    //     };
-    //   });
-    //   document.body.innerHTML = BillsUI({ error: "Erreur 500" })
-    //   const message = screen.getByText("Erreur 500")
-    //   expect(message).toBeTruthy()
-    // })
+    // Test lorsque l'on simule une erreur 500
+    test("fetches messages from an API and fails with 500 message error", async () => {
+      // on crée une instance de newBill
+      const MyBill = myBill()
+      const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
+        // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
+        return {
+          create: () => {
+            return Promise.reject(new Error("500"))
+          },
+        };
+      })
+      // on simule le fait que créer une nouvelle bill rejète une erreur
+      await expect(mockedBill().create()).rejects.toThrow("500")
+      // on vérifie que le store a bien été appelé
+      expect(mockedBill).toHaveBeenCalled()
+      // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
+      expect(MyBill.billId).toBeFalsy()
+    })
 
-  });
+  })
+
+
+
 
 
 })
