@@ -21,9 +21,7 @@ jest.mock("../app/store", () => mockStore)
  */
 function myBill(){
   const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({ pathname })}
-  const myStore = mockStore
-  const myStorage = window.localStorage
-  const MyBill = new NewBill( { document, onNavigate, store: myStore, localStorage: myStorage })
+  const MyBill = new NewBill( { document, onNavigate, store: mockStore, localStorage: window.localStorage })
   return MyBill
 }
 
@@ -40,8 +38,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   // On retourne le HTML de la page avant chaque test
-  const html = NewBillUI()
-  document.body.innerHTML = html
+  document.body.innerHTML = NewBillUI()
 })
 
 
@@ -201,7 +198,7 @@ describe("Given I am connected as an employee", () => {
           create: () => {
             return Promise.reject(new Error("404"))
           },
-        };
+        }
       })
       
       // on simule le fait que créer une nouvelle bill rejète une erreur
@@ -225,7 +222,7 @@ describe("Given I am connected as an employee", () => {
           create: () => {
             return Promise.reject(new Error("500"))
           },
-        };
+        }
       })
       
       // on simule le fait que créer une nouvelle bill rejète une erreur
