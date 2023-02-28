@@ -48,6 +48,7 @@ describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     
 
+    // Test icône navigation latérale sélectionné 
     test("Then bill icon in vertical layout should be highlighted", () => {
       const windowIcon = screen.getByTestId('icon-window')
       // L'icône est sensé avoir la classe “active-icon”
@@ -55,6 +56,7 @@ describe("Given I am connected as an employee", () => {
     })
     
 
+    // Test ordre des bills
     test("Then bills should be ordered from earliest to latest", () => {
       // On simule le DOM de la page
       document.body.innerHTML = BillsUI({ data: bills })
@@ -69,6 +71,7 @@ describe("Given I am connected as an employee", () => {
     })
 
 
+    // Test redirection en utilisant le bouton pour créer une nouvelle bill
     test("The NewBill button should redirect to NewBill page", () => {
       // On crée une instance de Bills
       const MyBills = myBills()
@@ -84,6 +87,7 @@ describe("Given I am connected as an employee", () => {
     })
 
 
+    // Test affichage de la modale lorsque l'on clique sur un icône œil
     test("The Bill icon should open a modal window", () => {
       // On crée une instance de Bills
       const MyBills = myBills()
@@ -105,7 +109,9 @@ describe("Given I am connected as an employee", () => {
   
   // Tests des erreurs 404 et 500
   describe("When an error occurs on API", () => {
-    test("fetches bills from an API and fails with 404 message error", async () => {
+    
+    // Test lorsque l'on simule une erreur 404
+    test("bills fetches from an API, but fails with 404 message error", async () => {
       // on simule le fait que lister les bills depuis le store rejète une erreur 404
       // const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
       //   return {
@@ -131,7 +137,8 @@ describe("Given I am connected as an employee", () => {
       expect(message).toBeTruthy()
     })
 
-    test("fetches messages from an API and fails with 500 message error", async () => {
+    // Test lorsque l'on simule une erreur 500
+    test("bills fetches from an API, but fails with 500 message error", async () => {
       mockStore.bills.mockImplementationOnce(() => {
         return {
           list: () => {

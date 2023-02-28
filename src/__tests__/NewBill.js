@@ -116,16 +116,13 @@ describe("Given I am connected as an employee", () => {
     test("If the form is empty, then the page shouldn't redirect to Bills page.", () => {
       const form = screen.getByTestId("form-new-bill")
       const submitButton = screen.getByText("Envoyer")
-      
       // on crée une instance de newBill
       const MyBill = myBill()
-      
       // on ne complète pas le formulaire
       // on simule la validation du formulaire
       const handleSubmit = jest.fn(MyBill.handleSubmit)
       form.addEventListener("submit", handleSubmit)
       userEvent.click(submitButton)
-      
       // on est sensé rester sur la même page (un formulaire vide n'est pas valide)
       expect(screen.getByText("Envoyer une note de frais")).toBeVisible()
     })
@@ -134,14 +131,11 @@ describe("Given I am connected as an employee", () => {
     test("If the form is complete, then the page should redirect to Bills page.", () => {
       // on crée une instance de newBill
       const MyBill = myBill()
-      
       // on récupère l'email de l'utilisateur dans local storage
       const user = JSON.parse(localStorage.getItem('user'))
-      
       // Question : Pourquoi est-ce que je dois parser 2 fois le contenu de local storage pour obtenir un objet exploitable ?
       const userObject = JSON.parse(user)
       const userEmail = userObject.email
-      
       // On crée un objet newBill qui contient les valeurs attendues de notre test
       const newBillTest = {
         userEmail,
@@ -156,10 +150,8 @@ describe("Given I am connected as an employee", () => {
         fileName: "newbilltest.jpg",
         status: "pending",
       };
-      
       // On crée un objet file pour l'uploader au formulaire
       const file = new File(["newbilltest"], "newbilltest.jpg", {type: "image/jpg"})
-      
       // On simule le remplissage du formulaire, avec les données de newBillTest :
       userEvent.selectOptions(screen.getByTestId("expense-type"), [newBillTest.type])
       userEvent.type(screen.getByTestId('expense-name'), newBillTest.name)
@@ -169,14 +161,12 @@ describe("Given I am connected as an employee", () => {
       userEvent.type(screen.getByTestId("pct"), newBillTest.pct.toString())
       userEvent.type(screen.getByTestId("commentary"), newBillTest.commentary)
       userEvent.upload(screen.getByTestId("file"), file)
-      
       // On simule un clic sur le submit
       const form = screen.getByTestId("form-new-bill")
       const submitButton = screen.getByText("Envoyer")
       const handleSubmit = jest.fn(MyBill.handleSubmit)
       form.addEventListener("submit", handleSubmit)
       userEvent.click(submitButton)
-
       // L'object bill construit par la méthode handleSubmit devrait correspondre à l'objet newBillTest
       //expect(handleSubmit).toHaveBeenCalledWith(newBillTest)
       // On devrait ensuite être redirigé vers la page Bills
@@ -188,10 +178,9 @@ describe("Given I am connected as an employee", () => {
   describe("When an error occurs on API", () => {
 
     // Test lorsque l'on simule une erreur 404
-    test("fetches bills from an API and fails with 404 message error", async () => {
+    test("a new bill fetches to the API, but fails with 404 message error", async () => {
       // on crée une instance de newBill
       const MyBill = myBill()
-      
       // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
       const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
         return {
@@ -200,22 +189,18 @@ describe("Given I am connected as an employee", () => {
           },
         }
       })
-      
       // on simule le fait que créer une nouvelle bill rejète une erreur
       await expect(mockedBill().create()).rejects.toThrow("404")
-      
       // on vérifie que le store a bien été appelé
       expect(mockedBill).toHaveBeenCalled()
-      
       // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
       expect(MyBill.billId).toBeFalsy()
     })
 
     // Test lorsque l'on simule une erreur 500
-    test("fetches messages from an API and fails with 500 message error", async () => {
+    test("a new bill fetches to the API, but fails with 500 message error", async () => {
       // on crée une instance de newBill
       const MyBill = myBill()
-      
       // on simule le fait que créer une nouvelle bill dans le store rejète une erreur 404
       const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
         return {
@@ -224,13 +209,10 @@ describe("Given I am connected as an employee", () => {
           },
         }
       })
-      
       // on simule le fait que créer une nouvelle bill rejète une erreur
       await expect(mockedBill().create()).rejects.toThrow("500")
-      
       // on vérifie que le store a bien été appelé
       expect(mockedBill).toHaveBeenCalled()
-      
       // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
       expect(MyBill.billId).toBeFalsy()
     })
