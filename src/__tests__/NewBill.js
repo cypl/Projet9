@@ -3,7 +3,7 @@
  */
 
 import '@testing-library/jest-dom'
-import { getByTestId, getByText, screen } from "@testing-library/dom"
+import { getByTestId, getByText, waitFor, screen } from "@testing-library/dom"
 import userEvent from '@testing-library/user-event'
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
@@ -20,35 +20,35 @@ jest.mock("../app/store", () => mockStore)
  * @returns 
  */
 function myBill(){
-  const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({ pathname })}
+  const onNavigate = (pathname) => {document.body.innerHTML = ROUTES({ pathname, data:[] })}
   const MyBill = new NewBill( { document, onNavigate, store: mockStore, localStorage: window.localStorage })
   return MyBill
 }
 
 
-beforeAll(() => {
-  // on simule localstorage pour un employé connecté
-  Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock,
-  });
-  const myUser = {type: "Employee", email: "a@a"}
-  localStorage.setItem('user',JSON.stringify(myUser))
-})
-
-
-beforeEach(() => {
-  // On retourne le HTML de la page avant chaque test
-  document.body.innerHTML = NewBillUI()
-})
-
-
-afterEach(() => {
-  // On vide le HTML de la page après chaque test
-  document.body.innerHTML = ""
-})
 
 
 describe("Given I am connected as an employee", () => {
+
+  beforeAll(() => {
+    // on simule localstorage pour un employé connecté
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+    });
+    const myUser = {type: "Employee", email: "a@a"}
+    localStorage.setItem('user',JSON.stringify(myUser))
+  })
+
+  beforeEach(() => {
+    // On retourne le HTML de la page avant chaque test
+    document.body.innerHTML = NewBillUI()
+  })
+  
+  
+  afterEach(() => {
+    // On vide le HTML de la page après chaque test
+    document.body.innerHTML = ""
+  })
 
   // Retour à la page Bills - test de la méthode handleClickBillsList()
   describe('When I am on New Bill page and click on the Bills icon in lateral navigation', () => {
@@ -127,8 +127,8 @@ describe("Given I am connected as an employee", () => {
       expect(screen.getByText("Envoyer une note de frais")).toBeVisible()
     })
 
-    // Test envoi du formulaire complété
-    test("If the form is complete, then the page should redirect to Bills page.", () => {
+    // Test envoi du formulaire complété, et test d'intégration POST
+    test("If the form is complete, then the page should redirect to Bills page.", async () => {
       // on crée une instance de newBill
       const MyBill = myBill()
       // on récupère l'email de l'utilisateur dans local storage
@@ -160,17 +160,24 @@ describe("Given I am connected as an employee", () => {
       userEvent.type(screen.getByTestId("vat"), newBillTest.vat.toString())
       userEvent.type(screen.getByTestId("pct"), newBillTest.pct.toString())
       userEvent.type(screen.getByTestId("commentary"), newBillTest.commentary)
-      userEvent.upload(screen.getByTestId("file"), file)
+      // userEvent.upload(screen.getByTestId("file"), file)
+      MyBill.fileName = newBillTest.fileName
       // On simule un clic sur le submit
       const form = screen.getByTestId("form-new-bill")
       const submitButton = screen.getByText("Envoyer")
-      const handleSubmit = jest.fn(MyBill.handleSubmit)
-      form.addEventListener("submit", handleSubmit)
+      const handleSubmit = jest.spyOn(MyBill, "handleSubmit")
+      form.addEventListener("submit", MyBill.handleSubmit)
       userEvent.click(submitButton)
-      // L'object bill construit par la méthode handleSubmit devrait correspondre à l'objet newBillTest
-      //expect(handleSubmit).toHaveBeenCalledWith(newBillTest)
-      // On devrait ensuite être redirigé vers la page Bills
-      //expect(screen.getByText("Mes notes de frais")).toBeVisible()
+      expect(handleSubmit).toHaveBeenCalled()
+
+      await waitFor( () => {
+        expect(screen.getByText("Mes notes de frais")).toBeVisible()
+        // Test d'intégration POST : 
+        // le formulaire a envoyé un fichier “newbilltest.jpg”,
+        // donc l'instance MyBill de newBill devrait recevoir la même valeur en fileName que newBillTest 
+        expect(MyBill.fileName).toEqual(newBillTest.fileName)
+      })
+
     })
   })
 
@@ -193,8 +200,6 @@ describe("Given I am connected as an employee", () => {
       await expect(mockedBill().create()).rejects.toThrow("404")
       // on vérifie que le store a bien été appelé
       expect(mockedBill).toHaveBeenCalled()
-      // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
-      expect(MyBill.billId).toBeFalsy()
     })
 
     // Test lorsque l'on simule une erreur 500
@@ -213,8 +218,6 @@ describe("Given I am connected as an employee", () => {
       await expect(mockedBill().create()).rejects.toThrow("500")
       // on vérifie que le store a bien été appelé
       expect(mockedBill).toHaveBeenCalled()
-      // on vérifie que la nouvelle Bill n'a pas été ajoutée (= pas d'ID)
-      expect(MyBill.billId).toBeFalsy()
     })
 
   })

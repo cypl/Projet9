@@ -32,6 +32,7 @@ export default class NewBill {
    * @returns 
    */
   handleChangeFile = e => {
+    console.log("test 4")
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
@@ -103,6 +104,7 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
+    console.log(this.fileName)
     // s'il n'y a pas de fichier, impossible de soumettre le formulaire.
     if (this.fileName){
       this.updateBill(bill)
@@ -112,11 +114,14 @@ export default class NewBill {
 
   // not need to cover this function by tests
   updateBill = (bill) => {
+    console.log("test 1")
     if (this.store) {
+      console.log("test 2")
       this.store
       .bills()
       .update({data: JSON.stringify(bill), selector: this.billId})
       .then(() => {
+        console.log("test 3")
         this.onNavigate(ROUTES_PATH['Bills'])
       })
       .catch(error => console.error(error))

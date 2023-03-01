@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom'
-import {screen} from "@testing-library/dom"
+import {within, screen} from "@testing-library/dom"
 import userEvent from '@testing-library/user-event'
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
@@ -107,33 +107,32 @@ describe("Given I am connected as an employee", () => {
   })
 
   
-  // Tests des erreurs 404 et 500
-  describe("When an error occurs on API", () => {
-    
+  
+  // Tests d'intégration GET, et des erreurs 404 et 500
+  describe("When I am on Bills Page", () => {
+
+    // Tests d'intégration GET
+    test("bills are fetched from API mock", async () => {
+      const tableBills = screen.getByTestId("tbody")
+      // le store mocké contient 4 entrées, donc le tableau de bills devrait avoir 4 lignes
+      expect(within(tableBills).getAllByRole("row")).toHaveLength(4)
+    })
+
+
     // Test lorsque l'on simule une erreur 404
     test("bills fetches from an API, but fails with 404 message error", async () => {
-      // on simule le fait que lister les bills depuis le store rejète une erreur 404
-      // const mockedBill = jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
-      //   return {
-      //     list: () => {
-      //       return Promise.reject(new Error("404"))
-      //     },
-      //   }
-      // })
-      // // on simule le fait que créer une liste de bills rejète une erreur
-      // await expect(mockedBill().list()).rejects.toThrow("404")
-      
+      // on simule le fait que lister les bills depuis le store rejète une erreur 404      
       mockStore.bills.mockImplementationOnce(() => {
         return {
           list: () => {
             return Promise.reject(new Error("Erreur 404"))
           },
-        };
+        }
       })
       window.onNavigate(ROUTES_PATH.Dashboard)
       document.body.innerHTML = BillsUI({ error: "Erreur 404" })
       await new Promise(process.nextTick)
-      const message = screen.getByText("Erreur 404")
+      const message = await screen.getByText("Erreur 404")
       expect(message).toBeTruthy()
     })
 
@@ -144,8 +143,8 @@ describe("Given I am connected as an employee", () => {
           list: () => {
             return Promise.reject(new Error("Erreur 500"))
           },
-        };
-      });
+        }
+      })
       window.onNavigate(ROUTES_PATH.Dashboard)
       document.body.innerHTML = BillsUI({ error: "Erreur 500" })
       await new Promise(process.nextTick)
