@@ -1,3 +1,4 @@
+import { config } from '../config/config.js'
 import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
 
@@ -38,37 +39,13 @@ export default class NewBill {
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     if(!file) return false
+
     // L'objet file contient une propriété qui permet de définir l'extension.
     // On peut donc lister les extensions que l'on souhaite autoriser :
-    const allowedExtensions = ["image/jpg","image/jpeg","image/png"]
+    const allowedExtensions = config.allowedExtensions
+
     // Et vérifier si file contient une propriété extension autorisée :
-    if(allowedExtensions.includes(file.type)){
-      const email = JSON.parse(localStorage.getItem("user")).email
-      this.formData = new FormData()
-      this.formData.append('file', file)
-      this.formData.append('email', email)
-      // Si le fichier a un bon format on peut l'envoyer vers le store, mais l'update se fait à la validation du formulaire
-      this.store 
-        .bills()
-        .create({
-          data: this.formData,
-          headers: {
-            noContentType: true,
-          },
-        })
-        .then(({ fileUrl, key }) => {
-          this.billId = key;
-          this.fileUrl = fileUrl;
-          this.fileName = fileName;
-        })
-        .catch(error => console.error(error))
-      
-      // si l'utilisateur a déjà tenté d'importer un fichier mais qu'il avait un mauvais format, on retire le message d'erreur
-      if(this.document.querySelector(`input[data-testid="file"]`).classList.contains("error-field")){
-        this.document.querySelector(`input[data-testid="file"]`).classList.remove("error-field")
-      }
-      if(document.getElementById("file-field-error")){document.getElementById("file-field-error").remove()}
-    } else {
+    if(!allowedExtensions.includes(file.type)){
       // si ce n'est pas le cas, on affiche une alerte avec un message d'erreur.
       const fileFieldContainer = this.document.querySelector(`input[data-testid="file"]`).parentNode
       const fileFieldError = document.createElement("p")
@@ -81,6 +58,34 @@ export default class NewBill {
       e.target.value = ""
       return false
     }
+
+    const email = JSON.parse(localStorage.getItem("user")).email
+    this.formData = new FormData()
+    this.formData.append('file', file)
+    this.formData.append('email', email)
+
+    // Si le fichier a un bon format on peut l'envoyer vers le store, mais l'update se fait à la validation du formulaire
+    this.store 
+      .bills()
+      .create({
+        data: this.formData,
+        headers: {
+          noContentType: true,
+        },
+      })
+      .then(({ fileUrl, key }) => {
+        this.billId = key;
+        this.fileUrl = fileUrl;
+        this.fileName = fileName;
+      })
+      .catch(error => console.error(error))
+      
+    // si l'utilisateur a déjà tenté d'importer un fichier mais qu'il avait un mauvais format, on retire le message d'erreur
+    if(this.document.querySelector(`input[data-testid="file"]`).classList.contains("error-field")){
+      this.document.querySelector(`input[data-testid="file"]`).classList.remove("error-field")
+    }
+
+    if(document.getElementById("file-field-error")){document.getElementById("file-field-error").remove()}
   }
 
   /**

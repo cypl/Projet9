@@ -113,9 +113,26 @@ describe("Given I am connected as an employee", () => {
 
     // Tests d'intégration GET
     test("bills are fetched from API mock", async () => {
-      const tableBills = screen.getByTestId("tbody")
-      // le store mocké contient 4 entrées, donc le tableau de bills devrait avoir 4 lignes
-      expect(within(tableBills).getAllByRole("row")).toHaveLength(4)
+      //On récupére les entrées du store mocké (data) dans un array data
+      mockStore.bills().list().then(data => { 
+        const tableBills = screen.getByTestId("tbody")
+        // le store mocké contient le même nombre d'entrées que le tableau de bills
+        expect(within(tableBills).getAllByRole("row")).toHaveLength(data.length)
+        // on réordonne data par date, comme dans l'UI
+        const dataOrder = data.sort((a, b) => {
+          const dateA = a.date
+          const dateB = b.date
+          return new Date(dateB)-new Date(dateA)
+        });
+        // on vérifie que les données sont bien intégrées aux bons endroits dans l'UI
+        const billNames = screen.getAllByTestId("bill-name")
+        const billTypes = screen.getAllByTestId("bill-type")
+        dataOrder.map(el => {
+          // Pour chaque entrée de dataOrder, la ligne correspondante du tableau doit avoir la même chaîne de caractères
+          expect(billNames[dataOrder.indexOf(el)].textContent).toBe(el.name)
+          expect(billTypes[dataOrder.indexOf(el)].textContent).toBe(el.type)
+        })
+      })
     })
 
 
